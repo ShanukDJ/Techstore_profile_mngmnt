@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -13,7 +16,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
-        User user = userRepository.findByEmailAndPassword(email, password);
+        User user = userRepository.findByEmailAndPassword(email, password );
         if (user == null) return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -21,6 +24,12 @@ public class UserController {
     @GetMapping("/users/{id}")
     public @ResponseBody User getUser(@PathVariable String id) {
         return userRepository.findById(Integer.parseInt(id)).get();
+    }
+    @GetMapping("/users")
+    public @ResponseBody List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(users::add);
+        return users;
     }
 
     @PostMapping("/users")
@@ -33,7 +42,7 @@ public class UserController {
         userRepository.deleteById(Integer.parseInt(id));
     }
 
-    @PutMapping("/users")
+    @PutMapping("/users/{id}")
     public @ResponseBody User UpdateUser(@RequestBody User user) {
         return userRepository.save(user);
     }

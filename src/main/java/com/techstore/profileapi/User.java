@@ -1,7 +1,5 @@
 package com.techstore.profileapi;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
@@ -31,6 +29,12 @@ public class User {
         this.fullName = fullName;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber){this.phoneNumber = phoneNumber; }
+
     public String getUserType() {
         return userType;
     }
@@ -48,12 +52,13 @@ public class User {
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true)
     private String email;
     private String fullName;
     private String userType;
+    private String phoneNumber;
     private String password;
 
 }
