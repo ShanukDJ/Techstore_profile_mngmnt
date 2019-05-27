@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<User> login(@Valid @RequestParam String email, @RequestParam String password) {
         User user = userRepository.findByEmailAndPassword(email, password );
         if (user == null) return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -25,6 +26,8 @@ public class UserController {
     public @ResponseBody User getUser(@PathVariable String id) {
         return userRepository.findById(Integer.parseInt(id)).get();
     }
+
+
     @GetMapping("/users")
     public @ResponseBody List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -33,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public @ResponseBody User createUser(@RequestBody User user) {
+    public @ResponseBody User createUser(@Valid @RequestBody User user) {
         return userRepository.save(user);
     }
 
@@ -43,9 +46,13 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public @ResponseBody User UpdateUser(@RequestBody User user) {
+    public @ResponseBody User UpdateUser(@Valid @RequestBody User user) {
         return userRepository.save(user);
     }
 }
+
+
+
+
 
 
